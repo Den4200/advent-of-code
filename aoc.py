@@ -11,8 +11,20 @@ import requests
 
 YEAR = 2020
 STARTING_CODE = """\
-with open('{input_file}') as f:
-    problem_input = f.read()
+def part_one(data):
+    pass
+
+
+def part_two(data):
+    pass
+
+
+if __name__ == '__main__':
+    with open('{input_file}') as f:
+        problem_input = f.read()
+
+    part_one(problem_input)
+    part_two(problem_input)
 """
 
 
