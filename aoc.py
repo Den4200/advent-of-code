@@ -4,20 +4,21 @@ import importlib
 import os
 import sys
 import typing as t
+import webbrowser
 from argparse import ArgumentParser, ArgumentTypeError
 from pathlib import Path
 
 import requests
+from bs4 import BeautifulSoup
 
-from aoc import YEAR
 
+AOC_SESSION_COOKIE = os.environ.get('AOC_SESSION_COOKIE')
+YEAR = 2020
 
 STARTING_CODE = """\
-from aoc import submit
-
-
-def parse_data(data):
-    pass
+def parse_data():
+    with open('{input_file}') as f:
+        data = f.read()
 
 
 def part_one(data):
@@ -29,22 +30,11 @@ def part_two(data):
 
 
 def main():
-    with open('{input_file}') as f:
-        problem_input = f.read()
+    data = parse_data()
 
-    data = parse_data(problem_input)
-
-    answer_one = part_one(data)
-    answer_two = part_two(data)
-
-    print(f'Day {day:02} Part 01: {{answer_one or "skipped"}}')
-    print(f'Day {day:02} Part 02: {{answer_two or "skipped"}}')
-
-    submit({day}, 1, answer_one)
-    submit({day}, 2, answer_two)
+    print(f'Day {day:02} Part 01: {{part_one(data) or "skipped"}}')
+    print(f'Day {day:02} Part 02: {{part_two(data) or "skipped"}}')
 """
-
-AOC_SESSION_COOKIE = os.environ.get('AOC_SESSION_COOKIE')
 
 
 def advent_day(day: str) -> int:
@@ -62,7 +52,7 @@ def aoc_part(part: str) -> int:
     if part in (1, 2):
         return part
 
-    raise ArgumentTypeError(f'{day} is not in range of 1 - 2')
+    raise ArgumentTypeError(f'{part} is not in range of 1 - 2')
 
 
 def get_input(day: int) -> t.Optional[str]:
@@ -98,21 +88,70 @@ def create_day(day: int) -> None:
     )
 
 
-def run_day(day: int) -> None:
-    importlib.import_module(f'aoc.{day:02}.solution').main()
+def run_day(day: int, part: t.Optional[int]) -> None:
+    solution_module = importlib.import_module(f'aoc.{day:02}.solution')
+
+    if part is None:
+        solution_module.main()
+    elif part == 1:
+        print(solution_module.part_one(solution_module.parse_data()))
+    elif part == 2:
+        print(solution_module.part_two(solution_module.parse_data()))
 
 
-if __name__ == "__main__":
+def submit(day: int, part: int):
+    if AOC_SESSION_COOKIE is None:
+        raise ValueError('Missing AOC_SESSION_COOKIE!')
+
+    part_word = 'one' if part == 1 else 'two'
+
+    solution_module = importlib.import_module(f'aoc.{day:02}.solution')
+    answer_func = getattr(solution_module, f'part_{part_word}')
+    problem_input = getattr(solution_module, 'parse_data')()
+
+    answer = answer_func(problem_input)
+
+    resp = requests.post(
+        f'https://adventofcode.com/{YEAR}/day/{day}/answer',
+        cookies={'session': AOC_SESSION_COOKIE},
+        data={'level': part, 'answer': answer}
+    )
+
+    if not resp.ok:
+        raise ValueError(f'Bad response from site: {resp.status_code}')
+
+    msg = BeautifulSoup(resp.text, 'html.parser').article.text
+
+    if msg.startswith("That's the") and part == 1:
+        webbrowser.open(resp.url)
+    
+    print(f'Day {day:02} Part {part:02}: {msg}')
+
+
+def main():
     parser = ArgumentParser(description='Advent of Code!')
 
-    parser.add_argument('--create', '-c', action='store_true', help="Create the given day's workspace")
-    parser.add_argument('--run', '-r', action='store_true', help="Run the given day's solution")
+    parser.add_argument('-c', '--create', action='store_true', help="Create the given day's workspace")
+    parser.add_argument('-r', '--run', action='store_true', help="Run the given day's solution")
+    parser.add_argument('-s', '--submit', action='store_true', help="Submit the given day's solution")
+
     parser.add_argument('day', type=advent_day, help='The day for the problem set')
-    
+    parser.add_argument('part', type=aoc_part, nargs='?', help='The part of the problem set')
+
     args = parser.parse_args()
 
     if args.create:
         create_day(args.day)
 
     if args.run:
-        run_day(args.day)
+        run_day(args.day, args.part)
+
+    if args.submit:
+        if args.part is None:
+            parser.error('the following arguments are required: part')
+        else:
+            submit(args.day, args.part)
+
+
+if __name__ == "__main__":
+    main()
