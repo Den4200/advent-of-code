@@ -1,27 +1,35 @@
 import itertools
 
+from aoc import submit
+
+
+def parse_data(data):
+    return [int(n) for n in data.splitlines()]
+
 
 def part_one(data):
-    data = [int(n) for n in data.splitlines()]
-
     for x, y in itertools.combinations(data, r=2):
         if x + y == 2020:
-            print(x * y)
-            break
+            return x * y
 
 
 def part_two(data):
-    data = [int(n) for n in data.splitlines()]
-
     for x, y, z in itertools.combinations(data, r=3):
-        if x + y + z== 2020:
-            print(x * y * z)
-            break
+        if x + y + z == 2020:
+            return x * y * z
 
 
-if __name__ == '__main__':
+def main():
     with open('aoc/01/input.txt') as f:
         problem_input = f.read()
 
-    part_one(problem_input)
-    part_two(problem_input)
+    data = parse_data(problem_input)
+
+    answer_one = part_one(data)
+    answer_two = part_two(data)
+
+    print(f'Day 01 Part 01: {answer_one or "skipped"}')
+    print(f'Day 01 Part 02: {answer_two or "skipped"}')
+
+    submit(1, 1, answer_one)
+    submit(1, 2, answer_two)
