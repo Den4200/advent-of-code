@@ -164,8 +164,8 @@ def main():
     parser.add_argument('-t', '--timeit', action='store_true', help="time the given day's solution")
     parser.add_argument('-s', '--submit', action='store_true', help="submit the given day's solution")
 
-    parser.add_argument('day', type=advent_day, help='The day for the problem set')
-    parser.add_argument('part', type=aoc_part, nargs='?', help='The part of the problem set')
+    parser.add_argument('day', type=advent_day, help='the day for the problem set')
+    parser.add_argument('part', type=aoc_part, nargs='?', help='the part of the problem set')
 
     args = parser.parse_args()
 
