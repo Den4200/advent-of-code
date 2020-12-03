@@ -6,6 +6,7 @@ import sys
 import typing as t
 import webbrowser
 from argparse import ArgumentParser, ArgumentTypeError
+from timeit import default_timer as timer
 from pathlib import Path
 
 import requests
@@ -99,7 +100,34 @@ def run_day(day: int, part: t.Optional[int]) -> None:
         print(solution_module.part_two(solution_module.parse_data()))
 
 
-def submit(day: int, part: int):
+def time_solution(day: int, part: int) -> None:
+    solution_module = importlib.import_module(f'aoc.{day:02}.solution')
+    data = solution_module.parse_data()
+
+    if part == 1:
+        action = solution_module.part_one
+    else:
+        action = solution_module.part_two
+
+    start = timer()
+    answer = action(data)
+    end = timer()
+
+    print(f'Day {day:02} Part {part:02}: {answer}')
+    print(f'Time elapsed: {end - start:.10f}')
+
+
+def time_solutions(day: int, part: t.Optional[int]) -> None:
+    if part is None:
+        time_solution(day, 1)
+        print()
+        time_solution(day, 2)
+
+    else:
+        time_solution(day, part)
+
+
+def submit(day: int, part: int) -> None:
     if AOC_SESSION_COOKIE is None:
         raise ValueError('Missing AOC_SESSION_COOKIE!')
 
@@ -131,9 +159,10 @@ def submit(day: int, part: int):
 def main():
     parser = ArgumentParser(description='Advent of Code!')
 
-    parser.add_argument('-c', '--create', action='store_true', help="Create the given day's workspace")
-    parser.add_argument('-r', '--run', action='store_true', help="Run the given day's solution")
-    parser.add_argument('-s', '--submit', action='store_true', help="Submit the given day's solution")
+    parser.add_argument('-c', '--create', action='store_true', help="create the given day's workspace")
+    parser.add_argument('-r', '--run', action='store_true', help="run the given day's solution")
+    parser.add_argument('-t', '--timeit', action='store_true', help="time the given day's solution")
+    parser.add_argument('-s', '--submit', action='store_true', help="submit the given day's solution")
 
     parser.add_argument('day', type=advent_day, help='The day for the problem set')
     parser.add_argument('part', type=aoc_part, nargs='?', help='The part of the problem set')
@@ -145,6 +174,9 @@ def main():
 
     if args.run:
         run_day(args.day, args.part)
+
+    if args.timeit:
+        time_solutions(args.day, args.part)
 
     if args.submit:
         if args.part is None:
