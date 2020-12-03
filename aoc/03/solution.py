@@ -6,13 +6,16 @@ def parse_data():
 
 
 def get_trees(data, dx, dy):
+    height = len(data)
+    width = len(data[0])
+
     trees = 0
     x = 0
-    for row in data[::dy]:
-        if row[x] == '#':
+    for y in range(0, height, dy):
+        if data[y][x] == '#':
             trees += 1
 
-        x = (x + dx) % len(row)
+        x = (x + dx) % width
 
     return trees
 
