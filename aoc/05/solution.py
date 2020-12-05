@@ -2,25 +2,12 @@ def parse_data():
     with open('aoc/05/input.txt') as f:
         data = f.read()
 
-    return [(line[:-3], line[-3:]) for line in data.splitlines()]
+    return data.splitlines()
 
 
 def get_ids(data):
-    ids = set()
-
-    for line in data:
-
-        row = 0
-        for idx, char in enumerate(line[0][::-1]):
-            row += 2 ** idx if char == 'B' else 0
-
-        col = 0
-        for idx, char in enumerate(line[1][::-1]):
-            col += 2 ** idx if char == 'R' else 0
-
-        ids.add(row * 8 + col)
-
-    return ids
+    to_binary = str.maketrans('FBLR', '0101')
+    return [int(code.translate(to_binary), base=2) for code in data]
 
 
 def part_one(data):
@@ -29,14 +16,14 @@ def part_one(data):
 
 def part_two(data):
     ids = get_ids(data)
-    rng = set(range(min(ids), max(ids) + 1))
 
-    # This will not return the correct answer for all inputs.
-    # However, I was lucky and received an input where
-    # I did not have to account for missing seats in the
-    # front and back rows.
-    return [*(rng - ids)][0]
+    min_id = min(ids)
+    max_id = max(ids)
 
+    seats_available = (max_id * (max_id + 1) - min_id * (min_id - 1)) // 2
+    seats_occupied = sum(ids)
+
+    return seats_available - seats_occupied
 
 def main():
     data = parse_data()
