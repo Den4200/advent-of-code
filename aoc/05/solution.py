@@ -31,6 +31,10 @@ def part_two(data):
     ids = get_ids(data)
     rng = set(range(min(ids), max(ids) + 1))
 
+    # This will not return the correct answer for all inputs.
+    # However, I was lucky and received an input where
+    # I did not have to account for missing seats in the
+    # front and back rows.
     return [*(rng - ids)][0]
 
 
