@@ -46,7 +46,7 @@ def app(stdscr):
     
     curses.use_default_colors()
     for i in range(0, curses.COLORS):
-        curses.init_pair(i, i, -1);
+        curses.init_pair(i, i, -1)
 
     height, width = stdscr.getmaxyx()
 
