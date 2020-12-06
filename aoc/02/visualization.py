@@ -41,7 +41,7 @@ class SubWindow:
         self.addstr(f'\n{spacing}{text}', *args, **kwargs)
 
 
-def main(stdscr):
+def app(stdscr):
     curses.curs_set(0)
     
     curses.use_default_colors()
@@ -221,5 +221,5 @@ def main(stdscr):
     stdscr.getkey()
 
 
-if __name__ == "__main__":
-    curses.wrapper(main)
+def main():
+    curses.wrapper(app)

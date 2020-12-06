@@ -127,6 +127,16 @@ def time_solutions(day: int, part: t.Optional[int]) -> None:
         time_solution(day, part)
 
 
+def visualize_solution(day: int) -> None:
+    try:
+        visualization_module = importlib.import_module(f'aoc.{day:02}.visualization')
+    except ImportError:
+        print(f'Visualization not found for day {day}')
+        return
+
+    visualization_module.main()
+
+
 def submit(day: int, part: int) -> None:
     if AOC_SESSION_COOKIE is None:
         raise ValueError('Missing AOC_SESSION_COOKIE!')
@@ -162,6 +172,7 @@ def main():
     parser.add_argument('-c', '--create', action='store_true', help="create the given day's workspace")
     parser.add_argument('-r', '--run', action='store_true', help="run the given day's solution")
     parser.add_argument('-t', '--timeit', action='store_true', help="time the given day's solution")
+    parser.add_argument('-v', '--visualize', action='store_true', help="visualize the given day's solution")
     parser.add_argument('-s', '--submit', action='store_true', help="submit the given day's solution")
 
     parser.add_argument('day', type=advent_day, help='the day for the problem set')
@@ -177,6 +188,9 @@ def main():
 
     if args.timeit:
         time_solutions(args.day, args.part)
+
+    if args.visualize:
+        visualize_solution(args.day)
 
     if args.submit:
         if args.part is None:
