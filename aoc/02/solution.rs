@@ -5,8 +5,8 @@ use regex::Regex;
 fn main() {
     let data = get_input();
 
-    println!("{}", part_one(&data));
-    println!("{}", part_two(&data));
+    println!("Day 02 Part 01: {}", part_one(&data));
+    println!("Day 02 Part 02: {}", part_two(&data));
 }
 
 fn get_input() -> Vec<(u16, u16, String, String)> {

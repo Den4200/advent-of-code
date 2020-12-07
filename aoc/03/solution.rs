@@ -1,8 +1,8 @@
 fn main() {
     let data = get_input();
 
-    println!("{}", part_one(&data));
-    println!("{}", part_two(&data));
+    println!("Day 03 Part 01: {}", part_one(&data));
+    println!("Day 03 Part 02: {}", part_two(&data));
 }
 
 fn get_input<'a>() -> Vec<&'a str> {

@@ -1,8 +1,8 @@
 fn main() {
     let data = get_input();
 
-    println!("{}", part_one(&data).unwrap());
-    println!("{}", part_two(&data).unwrap());
+    println!("Day 01 Part 01: {}", part_one(&data).unwrap());
+    println!("Day 01 Part 02: {}", part_two(&data).unwrap());
 }
 
 fn get_input() -> Vec<i64> {
