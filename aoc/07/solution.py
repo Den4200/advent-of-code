@@ -1,5 +1,5 @@
 import re
-from functools import lru_cache
+from functools import cache
 
 
 def parse_data():
@@ -21,7 +21,7 @@ def parse_data():
 
 def part_one(data):
 
-    @lru_cache
+    @cache
     def has_shiny_gold(bag):
         if 'shiny gold' in data[bag]:
             return True
