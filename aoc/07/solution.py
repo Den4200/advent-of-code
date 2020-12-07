@@ -1,4 +1,5 @@
 import re
+from functools import lru_cache
 
 
 def parse_data():
@@ -18,23 +19,24 @@ def parse_data():
     }
 
 
-def has_shiny_gold(bag, data):
-    if 'shiny gold' in data[bag]:
-        return True
-
-    return any(has_shiny_gold(b, data) for b in data[bag])
-
-
-def count_bags(bag, data):
-    return sum(count_bags(b, data) * amt for b, amt in data[bag].items()) + 1
-
-
 def part_one(data):
-    return sum(has_shiny_gold(bag, data) for bag in data)
+
+    @lru_cache
+    def has_shiny_gold(bag):
+        if 'shiny gold' in data[bag]:
+            return True
+
+        return any(has_shiny_gold(b) for b in data[bag])
+
+    return sum(has_shiny_gold(bag) for bag in data)
 
 
 def part_two(data):
-    return count_bags('shiny gold', data) - 1
+
+    def count_bags(bag):
+        return sum(count_bags(b) * amt for b, amt in data[bag].items()) + 1
+
+    return count_bags('shiny gold') - 1
 
 
 def main():
