@@ -41,13 +41,15 @@ def part_two(data):
         action, value = instruction
 
         if action == 'jmp':
-            idx, acc = execute(data[:i] + [('nop', int(value))] + data[i + 1:])
+            action = 'nop'
 
         elif action == 'nop':
-            idx, acc = execute(data[:i] + [('jmp', int(value))] + data[i + 1:])
+            action = 'jmp'
 
         else:
             continue
+
+        idx, acc = execute(data[:i] + [(action, value)] + data[i + 1:])
 
         if idx == len(data):
             return acc
