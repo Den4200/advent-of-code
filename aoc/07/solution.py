@@ -8,7 +8,7 @@ def parse_data():
 
     data = [
         (
-            ' '.join(line.split()[:2]),
+            re.match(r'(\w+ \w+) bags contain', line)[1],
             re.findall(r'(\d) (\w+ \w+) bag', line)
         )
         for line in data.splitlines()
