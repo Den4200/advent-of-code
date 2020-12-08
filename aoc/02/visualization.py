@@ -2,6 +2,7 @@ import curses
 import re
 import time
 from collections import deque
+from contextlib import suppress
 
 
 def parse_data():
@@ -222,4 +223,5 @@ def app(stdscr):
 
 
 def main():
-    curses.wrapper(app)
+    with suppress(KeyboardInterrupt):
+        curses.wrapper(app)
