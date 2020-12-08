@@ -58,5 +58,5 @@ def part_two(data):
 def main():
     data = parse_data()
 
-    print(f'Day 08 Part 01: {part_one(data) or "skipped"}')
-    print(f'Day 08 Part 02: {part_two(data) or "skipped"}')
+    print(f'Day 08 Part 01: {part_one(data)}')
+    print(f'Day 08 Part 02: {part_two(data)}')
