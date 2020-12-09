@@ -1,5 +1,4 @@
 from collections import deque
-import itertools
 
 
 def parse_data():
