@@ -1,5 +1,4 @@
 import itertools
-import time
 
 
 def parse_data():
@@ -10,7 +9,6 @@ def parse_data():
 
 
 def part_one(data):
-    
     for idx, num in enumerate(data[25:], start=25):
         valid = {x + y for x, y in itertools.combinations(data[idx - 25:idx], r=2)}
 
