@@ -1,3 +1,4 @@
+from collections import deque
 import itertools
 
 
@@ -9,11 +10,19 @@ def parse_data():
 
 
 def part_one(data):
-    for idx, num in enumerate(data[25:], start=25):
-        valid = {x + y for x, y in itertools.combinations(data[idx - 25:idx], r=2)}
+    preamble = deque(data[:25], maxlen=25)
+    nums = set(data[:25])
 
-        if num not in valid:
+    for num in data[25:]:
+        for compliment in preamble:
+            if compliment * 2 != num and num - compliment in nums:
+                break
+        else:
             return num
+
+        nums.remove(preamble[0])
+        preamble.append(num)
+        nums.add(num)
 
 
 def part_two(data):
