@@ -1,4 +1,4 @@
-from contextlib import suppress
+import itertools
 
 import numpy as np
 
@@ -7,36 +7,35 @@ def parse_data():
     with open('aoc/11/input.txt') as f:
         data = f.read()
 
-    return [list(line) for line in data.splitlines()]
+    return np.array([list(line) for line in data.splitlines()])
 
 
 def part_one(data):
-    data = np.array(data)
     data[data == 'L'] = '#'
+
+    height, width = data.shape
 
     while True:
         changed = False
 
-        copy = data.copy()
+        buffer = data.copy()
         for (y, x), value in np.ndenumerate(data):
-            surroundings = data[
-                max(y - 1, 0): min(y + 2, data.shape[0]),
-                max(x - 1, 0): min(x + 2, data.shape[1])
+            surroundings = buffer[
+                max(y - 1, 0): min(y + 2, height),
+                max(x - 1, 0): min(x + 2, width)
             ]
 
             occupied = len(np.where(surroundings == '#')[0])
 
             if value == 'L':
                 if occupied == 0:
-                    copy[y, x] = '#'
+                    data[y, x] = '#'
                     changed = True
 
             elif value == '#':
                 if occupied >= 5:
-                    copy[y, x] = 'L'
+                    data[y, x] = 'L'
                     changed = True
-
-        data = copy
 
         if not changed:
             return len(np.where(data == '#')[0])
