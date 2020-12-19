@@ -1,5 +1,5 @@
 import re
-from functools import partial
+from functools import cache
 
 
 def parse_data():
@@ -13,28 +13,31 @@ def parse_data():
     return rules, data[1].splitlines()
 
 
-def generate_regex(rules, idx='0', max_depth=20):
-    if max_depth == 0:
-        return ''
-
-    rule = rules[idx]
-
-    if '|' in rule:
-        left, right = rule.split(' | ')
-        return (
-            f'({"".join(generate_regex(rules, num, max_depth - 1) for num in left.split())}|'
-            f'{"".join(generate_regex(rules, num, max_depth - 1) for num in right.split())})'
-        )
-
-    elif match := re.fullmatch(r'"([a-z])"', rule):
-        return match[1]
-
-    else:
-        return ''.join(generate_regex(rules, num, max_depth - 1) for num in rule.split())
-
-
 def part_one(data):
-    regex = generate_regex(data[0])
+    rules = data[0]
+
+    @cache
+    def generate_regex(idx='0', max_depth=20):
+        if max_depth == 0:
+            return ''
+
+        rule = rules[idx]
+
+        if '|' in rule:
+            left, right = rule.split(' | ')
+
+            left = ''.join(generate_regex(num, max_depth - 1) for num in left.split())
+            right = ''.join(generate_regex(num, max_depth - 1) for num in right.split())
+
+            return f'({left}|{right})'
+
+        elif match := re.fullmatch(r'"([a-z])"', rule):
+            return match[1]
+
+        else:
+            return ''.join(generate_regex(num, max_depth - 1) for num in rule.split())
+
+    regex = generate_regex()
     return sum(bool(re.fullmatch(regex, line)) for line in data[1])
 
 
@@ -42,8 +45,7 @@ def part_two(data):
     data[0]['8'] = '42 | 42 8'
     data[0]['11'] = '42 31 | 42 11 31'
 
-    regex = generate_regex(data[0])
-    return sum(bool(re.fullmatch(regex, line)) for line in data[1])
+    return part_one(data)
 
 
 def main():
