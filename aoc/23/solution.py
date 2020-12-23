@@ -25,7 +25,6 @@ def part_one(data):
         cups.rotate(-cups.index(current))
 
         choices = [cups[j] for j in range(1, 4)]
-
         for choice in choices:
             cups.remove(choice)
 
@@ -71,7 +70,7 @@ def part_two(data):
 
         dest = head.value - 1 if head.value > 1 else 1_000_000
 
-        while dest in {start.value, start.next.value, end.value}:
+        while dest in (start.value, start.next.value, end.value):
             dest -= 1
 
             if dest == 0:
