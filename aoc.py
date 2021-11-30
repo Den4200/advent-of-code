@@ -74,7 +74,7 @@ def get_input(day: int) -> t.Optional[str]:
 def create_day(day: int) -> None:
     problem_input = get_input(day)
 
-    directory = Path('aoc') / f'{day:02}'
+    directory = Path(str(YEAR)) / f'{day:02}'
     directory.mkdir()
 
     input_file = directory / 'input.txt'
@@ -90,7 +90,7 @@ def create_day(day: int) -> None:
 
 
 def run_day(day: int, part: t.Optional[int]) -> None:
-    solution_module = importlib.import_module(f'aoc.{day:02}.solution')
+    solution_module = importlib.import_module(f'{YEAR}.{day:02}.solution')
 
     if part is None:
         solution_module.main()
@@ -101,7 +101,7 @@ def run_day(day: int, part: t.Optional[int]) -> None:
 
 
 def time_solution(day: int, part: int) -> None:
-    solution_module = importlib.import_module(f'aoc.{day:02}.solution')
+    solution_module = importlib.import_module(f'{YEAR}.{day:02}.solution')
     data = solution_module.parse_data()
 
     if part == 1:
@@ -129,7 +129,7 @@ def time_solutions(day: int, part: t.Optional[int]) -> None:
 
 def visualize_solution(day: int) -> None:
     try:
-        visualization_module = importlib.import_module(f'aoc.{day:02}.visualization')
+        visualization_module = importlib.import_module(f'{YEAR}.{day:02}.visualization')
     except ImportError:
         print(f'Visualization not found for day {day}')
         return
@@ -143,7 +143,7 @@ def submit(day: int, part: int) -> None:
 
     part_word = 'one' if part == 1 else 'two'
 
-    solution_module = importlib.import_module(f'aoc.{day:02}.solution')
+    solution_module = importlib.import_module(f'{YEAR}.{day:02}.solution')
     answer_func = getattr(solution_module, f'part_{part_word}')
     problem_input = getattr(solution_module, 'parse_data')()
 
