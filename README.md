@@ -1,4 +1,4 @@
-# Advent of Code 2020
+# Advent of Code
 It's that time of year again!
 
 ## AoC CLI

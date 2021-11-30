@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 
 
 AOC_SESSION_COOKIE = os.environ.get('AOC_SESSION_COOKIE')
-YEAR = 2020
+YEAR = 2021
 
 STARTING_CODE = """\
 def parse_data():
