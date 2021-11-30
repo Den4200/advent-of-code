@@ -6,7 +6,7 @@ from contextlib import suppress
 
 
 def parse_data():
-    with open('aoc/02/input.txt') as f:
+    with open('2020/02/input.txt') as f:
         data = f.read()
 
     return list(re.findall(r'(\d+)-(\d+) (\w): (\w+)', data))
