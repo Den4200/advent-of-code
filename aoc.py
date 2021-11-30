@@ -2,7 +2,6 @@
 
 import importlib
 import os
-import sys
 import typing as t
 import webbrowser
 from argparse import ArgumentParser, ArgumentTypeError
