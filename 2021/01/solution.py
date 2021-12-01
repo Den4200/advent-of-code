@@ -10,7 +10,7 @@ def part_one(data):
 
 
 def part_two(data):
-    return sum(sum(data[i-2:i+1]) > sum(data[i-3:i]) for i, _ in enumerate(data[3:], 3))
+    return sum(curr > prev for prev, curr in zip(data, data[3:]))
 
 
 def main():
