@@ -16,14 +16,14 @@ fn get_input() -> Vec<u32> {
         .collect()
 }
 
-fn part_one(data: &Vec<u32>) -> u32 {
+fn part_one(data: &Vec<u32>) -> usize {
     zip(data, &data[1..])
-        .map(|(prev, curr)| if curr > prev { 1 } else { 0 })
-        .sum()
+        .filter(|(prev, curr)| curr > prev)
+        .count()
 }
 
-fn part_two(data: &Vec<u32>) -> u32 {
+fn part_two(data: &Vec<u32>) -> usize {
     zip(data, &data[3..])
-        .map(|(prev, curr)| if curr > prev { 1 } else { 0 })
-        .sum()
+        .filter(|(prev, curr)| curr > prev)
+        .count()
 }
