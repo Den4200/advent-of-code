@@ -9,7 +9,7 @@ fn main() {
 
 fn get_input() -> Vec<u32> {
     let input = String::from(include_str!("input.txt"));
-    
+
     input
         .lines()
         .map(|num| num.parse::<u32>().unwrap())
