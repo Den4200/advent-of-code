@@ -38,21 +38,16 @@ fn part_one(data: &Vec<(&str, i32)>) -> i32 {
 }
 
 fn part_two(data: &Vec<(&str, i32)>) -> i32 {
-    let mut x = 0;
-    let mut depth = 0;
-    let mut aim = 0;
-
-    for (direction, amount) in data {
-        match *direction {
-            "forward" => {
-                x += amount;
-                depth += aim * amount;
-            }
-            "up" => aim -= amount,
-            "down" => aim += amount,
-            _ => panic!("unknown direction"),
-        };
-    }
+    let (x, depth, _aim) =
+        data.iter().fold(
+            (0, 0, 0),
+            |(x, depth, aim), (direction, amount)| match *direction {
+                "forward" => (x + amount, depth + aim * amount, aim),
+                "up" => (x, depth, aim - amount),
+                "down" => (x, depth, aim + amount),
+                _ => panic!("unknown direction"),
+            },
+        );
 
     x * depth
 }
