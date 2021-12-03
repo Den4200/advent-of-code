@@ -13,7 +13,7 @@ def part_one(data):
 
     bits = defaultdict(int)
     for binary in data:
-        for i in range(12):
+        for i in range(binary_length):
             bits[i] += 1 if binary & (1 << (binary_length - i - 1)) > 0 else 0
 
     gamma = 0
@@ -25,7 +25,7 @@ def part_one(data):
 
 
 def gas_filter(binary_length, data, compare_func):
-    for i in range(12):
+    for i in range(binary_length):
         ones = sum(binary & (1 << (binary_length - i - 1)) > 0 for binary in data)
 
         bit_compare = int.__gt__ if compare_func(ones, len(data) - ones) else int.__eq__
