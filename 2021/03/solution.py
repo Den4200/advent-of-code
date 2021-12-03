@@ -3,9 +3,9 @@ from collections import defaultdict
 
 def parse_data():
     with open('2021/03/input.txt') as f:
-        data = f.read()
+        data = f.read().splitlines()
 
-    return len(data.splitlines()[0]), [int(binary, 2) for binary in data.splitlines()]
+    return len(data[0]), [int(binary, 2) for binary in data]
 
 
 def part_one(data):
