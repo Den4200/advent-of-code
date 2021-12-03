@@ -21,7 +21,7 @@ def part_one(data):
         if amt >= len(data) >> 1:
             gamma |= 1 << (binary_length - i - 1)
 
-    return gamma * (gamma ^ 2 ** binary_length - 1)
+    return gamma * (gamma ^ ((1 << binary_length) - 1))
 
 
 def gas_filter(binary_length, data, compare_func):
