@@ -1,27 +1,29 @@
-from functools import cache
-
-
 def parse_data():
     with open('2021/06/input.txt') as f:
         data = f.read()
 
-    return [int(num) for num in data.split(",")]
+    fish = [0] * 9
+    for num in data.split(","):
+        fish[int(num)] += 1
+
+    return fish
 
 
-@cache
-def lanternfish(age, day):
-    if age >= day:
-        return 1
+def lanternfish(data, days):
+    data = data.copy()
 
-    return lanternfish(7, day - age) + lanternfish(9, day - age)
+    for day in range(days):
+        data[(day + 7) % 9] += data[day % 9]
+
+    return sum(data)
 
 
 def part_one(data):
-    return sum(lanternfish(age, 80) for age in data)
+    return lanternfish(data, 80)
 
 
 def part_two(data):
-    return sum(lanternfish(age, 256) for age in data)
+    return lanternfish(data, 256)
 
 
 def main():
