@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.optimize import minimize_scalar
 
 
 def parse_data():
@@ -9,18 +10,11 @@ def parse_data():
 
 
 def part_one(data):
-    median = np.median(data).astype(int)
-    return np.abs(median - data).sum()
+    return minimize_scalar(lambda x: np.abs(round(x) - data).sum()).fun
 
 
 def part_two(data):
-    mean = np.mean(data).astype(int)
-
-    # We only need to account for mean +/- 0.5, but we need integers!
-    bounds = np.arange(mean - 1, mean + 2)
-
-    diff = np.abs(data - bounds[:, None])
-    return (diff * (diff + 1) // 2).sum(1).min()
+    return minimize_scalar(lambda x: (np.abs(round(x) - data) * (np.abs(round(x) - data) + 1) // 2).sum()).fun
 
 
 def main():
