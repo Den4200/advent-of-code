@@ -14,7 +14,7 @@ def part_one(data):
     bits = defaultdict(int)
     for binary in data:
         for i in range(binary_length):
-            bits[i] += 1 if binary & (1 << (binary_length - i - 1)) > 0 else 0
+            bits[i] += binary & (1 << (binary_length - i - 1)) > 0
 
     gamma = 0
     for i, amt in bits.items():
