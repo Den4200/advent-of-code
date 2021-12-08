@@ -22,7 +22,7 @@ fn get_input<'a>() -> Vec<(&'a str, i32)> {
         .collect()
 }
 
-fn part_one(data: &Vec<(&str, i32)>) -> i32 {
+fn part_one(data: &[(&str, i32)]) -> i32 {
     let (x, depth) = data
         .iter()
         .map(|(direction, amount)| match *direction {
@@ -37,7 +37,7 @@ fn part_one(data: &Vec<(&str, i32)>) -> i32 {
     x * depth
 }
 
-fn part_two(data: &Vec<(&str, i32)>) -> i32 {
+fn part_two(data: &[(&str, i32)]) -> i32 {
     let (x, depth, _aim) =
         data.iter().fold(
             (0, 0, 0),
