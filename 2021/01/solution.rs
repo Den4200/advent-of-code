@@ -16,13 +16,13 @@ fn get_input() -> Vec<u32> {
         .collect()
 }
 
-fn part_one(data: &Vec<u32>) -> usize {
+fn part_one(data: &[u32]) -> usize {
     zip(data, &data[1..])
         .filter(|(prev, curr)| curr > prev)
         .count()
 }
 
-fn part_two(data: &Vec<u32>) -> usize {
+fn part_two(data: &[u32]) -> usize {
     zip(data, &data[3..])
         .filter(|(prev, curr)| curr > prev)
         .count()
