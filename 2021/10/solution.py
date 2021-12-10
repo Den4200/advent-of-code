@@ -5,7 +5,7 @@ CHUNKS = {
     "<": ">",
 }
 
-SYNTAX_ERROR_SCORES = {
+SYNTAX_ERROR_POINTS = {
     ")": 3,
     "]": 57,
     "}": 1197,
@@ -28,42 +28,42 @@ def parse_data():
 
 
 def part_one(data):
-    syntax_error_score = 0
+    score = 0
     for line in data:
-        queue = []
+        stack = []
 
         for char in line:
             if char in CHUNKS:
-                queue.append(CHUNKS[char])
-            elif char == queue[-1]:
-                queue.pop()
+                stack.append(CHUNKS[char])
+            elif char == stack[-1]:
+                stack.pop()
             else:
-                syntax_error_score += SYNTAX_ERROR_SCORES[char]
+                score += SYNTAX_ERROR_POINTS[char]
                 break
 
-    return syntax_error_score
+    return score
 
 
 def part_two(data):
-    totals = []
+    scores = []
     for line in data:
-        queue = []
+        stack = []
 
         for char in line:
             if char in CHUNKS:
-                queue.append(CHUNKS[char])
-            elif char == queue[-1]:
-                queue.pop()
+                stack.append(CHUNKS[char])
+            elif char == stack[-1]:
+                stack.pop()
             else:
                 break
         else:
-            total = 0
-            for c in reversed(queue):
-                total = total * 5 + COMPLETION_POINTS[c]
+            score = 0
+            for c in stack[::-1]:
+                score = score * 5 + COMPLETION_POINTS[c]
 
-            totals.append(total)
+            scores.append(score)
 
-    return sorted(totals)[len(totals) // 2]
+    return sorted(scores)[len(scores) // 2]
 
 
 def main():
