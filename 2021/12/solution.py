@@ -12,7 +12,7 @@ def part_one(data, cave="start", small_caves=()):
     if cave == "end":
         return 1
 
-    if cave.islower():
+    if cave.islower() and cave not in small_caves:
         small_caves += (cave,)
 
     return sum(
