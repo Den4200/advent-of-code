@@ -39,7 +39,7 @@ def part_two(data, cave="start", small_caves=(), seen_twice=None):
     return sum(
         part_two(data, neighbor, small_caves, seen_twice)
         for neighbor in data[cave]
-        if neighbor != "start" and (neighbor not in small_caves or seen_twice is None)
+        if neighbor not in small_caves or (seen_twice is None and neighbor != "start")
     )
 
 
