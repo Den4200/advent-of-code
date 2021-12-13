@@ -35,7 +35,7 @@ def part_two(data):
     for f in folds:
         paper = fold(paper, *f)
 
-    print("\n".join("".join("#" if coord else "." for coord in row) for row in paper))
+    print("\n".join("".join("██" if coord else "  " for coord in row) for row in paper))
     return "RLBCJGLU"
 
 
