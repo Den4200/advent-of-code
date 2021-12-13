@@ -1,3 +1,5 @@
+from functools import cache
+
 import networkx as nx
 
 
@@ -8,6 +10,7 @@ def parse_data():
     return nx.Graph(line.split("-") for line in data.splitlines())
 
 
+@cache
 def part_one(data, cave="start", small_caves=()):
     if cave == "end":
         return 1
@@ -22,6 +25,7 @@ def part_one(data, cave="start", small_caves=()):
     )
 
 
+@cache
 def part_two(data, cave="start", small_caves=(), seen_twice=None):
     if cave == "end":
         return 1
@@ -35,7 +39,7 @@ def part_two(data, cave="start", small_caves=(), seen_twice=None):
     return sum(
         part_two(data, neighbor, small_caves, seen_twice)
         for neighbor in data[cave]
-        if neighbor != "start" and (neighbor not in small_caves or seen_twice is None)
+        if neighbor not in small_caves or (seen_twice is None and neighbor != "start")
     )
 
 
