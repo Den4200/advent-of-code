@@ -36,6 +36,13 @@ def part_two(data):
         paper = fold(paper, *f)
 
     print("\n".join("".join("██" if coord else "  " for coord in row) for row in paper))
+
+    # Visualize solution
+    #
+    # import matplotlib.pyplot as plt
+    # plt.imshow(paper)
+    # plt.show()
+
     return "RLBCJGLU"
 
 
