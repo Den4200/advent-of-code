@@ -1,5 +1,5 @@
 import re
-from collections import Counter, defaultdict
+from collections import Counter
 
 
 def parse_data():
@@ -7,8 +7,8 @@ def parse_data():
         data = f.read()
 
     polymer_template = list(data.split(maxsplit=1)[0])
-
     pair_insertions = dict(re.findall(r"([A-Z]{2}) -> ([A-Z])", data))
+
     return polymer_template, pair_insertions
 
 
@@ -16,19 +16,20 @@ def npolymers(polymers, pair_insertions, steps):
     pair_count = Counter("".join(pair) for pair in zip(polymers, polymers[1:]))
 
     for _ in range(steps):
-        new_pair_counts = defaultdict(int)
+        new_pair_count = Counter()
         for pair in pair_count:
-            new_pair_counts[pair[0] + pair_insertions[pair]] += pair_count[pair]
-            new_pair_counts[pair_insertions[pair] + pair[1]] += pair_count[pair]
+            new_pair_count[pair[0] + pair_insertions[pair]] += pair_count[pair]
+            new_pair_count[pair_insertions[pair] + pair[1]] += pair_count[pair]
 
-        pair_count = new_pair_counts
+        pair_count = new_pair_count
 
-    polymer_counts = defaultdict(int)
+    polymer_counts = Counter()
     for pair in pair_count:
         polymer_counts[pair[0]] += pair_count[pair]
 
     polymer_counts[polymers[-1]] += 1
-    return max(polymer_counts.values()) - min(polymer_counts.values())
+    sorted_counts = polymer_counts.most_common()
+    return sorted_counts[0][1] - sorted_counts[-1][1]
 
 
 def part_one(data):
