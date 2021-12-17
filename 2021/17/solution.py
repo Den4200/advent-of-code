@@ -15,12 +15,7 @@ def find_max_height(xmin, xmax, ymin, ymax, dx, dy):
     y = 0
     max_height = None
 
-    while not (
-        x > xmax and dx >= 0
-        or x < xmin and dx <= 0
-        or dx == 0 and not xmin <= x <= xmax
-        or y < ymin and dy <= 0
-    ):
+    while x < xmax and y > ymin:
         x += dx
         y += dy
 
