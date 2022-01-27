@@ -1,6 +1,7 @@
 import re
 
 import numpy as np
+from advent_of_code_ocr import convert_array_6
 
 
 def parse_data():
@@ -35,15 +36,15 @@ def part_two(data):
     for f in folds:
         paper = fold(paper, *f)
 
-    print("\n".join("".join("██" if coord else "  " for coord in row) for row in paper))
-
     # Visualize solution
+    #
+    # print("\n".join("".join("██" if coord else "  " for coord in row) for row in paper))
     #
     # import matplotlib.pyplot as plt
     # plt.imshow(paper)
     # plt.show()
 
-    return "RLBCJGLU"
+    return convert_array_6(paper, fill_pixel=1, empty_pixel=0)
 
 
 def main():
