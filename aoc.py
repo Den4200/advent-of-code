@@ -17,7 +17,7 @@ YEAR = 2022
 
 STARTING_CODE = """\
 def parse_data():
-    with open('{input_file}') as f:
+    with open("{input_file}") as f:
         data = f.read()
 
 
@@ -32,8 +32,8 @@ def part_two(data):
 def main():
     data = parse_data()
 
-    print(f'Day {day:02} Part 01: {{part_one(data)}}')
-    print(f'Day {day:02} Part 02: {{part_two(data)}}')
+    print(f"Day {day:02} Part 01: {{part_one(data)}}")
+    print(f"Day {day:02} Part 02: {{part_two(data)}}")
 """
 
 
