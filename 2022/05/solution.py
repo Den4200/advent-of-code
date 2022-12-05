@@ -6,11 +6,12 @@ import numpy as np
 
 def parse_data():
     with open("2022/05/input.txt") as f:
-        data = f.readlines()
+        data = f.read()
 
-    crates = np.transpose([[line[i] for i in range(1, len(line), 4)] for line in data[:8]])[::,::-1]
+    sections = data.split("\n\n")
+    crates = np.transpose([[line[i] for i in range(1, len(line), 4)] for line in sections[0].splitlines()[:-1]])[::,::-1]
     crates = [[crate for crate in stack if crate != " "] for stack in crates]
-    moves = [tuple(map(int, re.findall("\d+", line))) for line in data[10:]]
+    moves = [tuple(map(int, re.findall("\d+", line))) for line in sections[1].splitlines()]
 
     return {
         "crates": crates,
