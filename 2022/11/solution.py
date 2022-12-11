@@ -1,6 +1,6 @@
 from copy import deepcopy
 from dataclasses import dataclass
-from math import prod
+from math import lcm
 import operator
 import re
 from typing import Callable
@@ -83,7 +83,7 @@ def part_one(data):
 
 
 def part_two(data):
-    divisor = prod(monkey.divisor for monkey in data)
+    divisor = lcm(*(monkey.divisor for monkey in data))
     return simulate_monkey_inspections(
         data,
         10_000,
