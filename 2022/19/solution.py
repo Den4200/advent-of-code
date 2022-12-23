@@ -119,6 +119,7 @@ def part_one(data):
 def part_two(data):
     return prod(find_max_geodes(blueprint, 32) for blueprint in data[:3])
 
+
 def main():
     data = parse_data()
 
