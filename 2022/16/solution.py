@@ -1,5 +1,4 @@
 from collections import defaultdict
-from functools import cache
 import re
 
 import networkx as nx
@@ -31,75 +30,42 @@ def parse_data():
     return graph, flow_rates
 
 
-def find_max_pressure(source, dest, min1, min2, graph, flow_rates, total_flow_rate, visited, minutes):
+def find_max_pressure(valve, graph, flow_rates, visited, minutes, elephant=False, memo=None):
+    if memo is None:
+        memo = {}
+
+    state = (valve, visited, minutes, elephant)
+    if state in memo:
+        return memo[state]
+
     if minutes == 0:
-        return total_flow_rate
+        if elephant:
+            return find_max_pressure("AA", graph, flow_rates, visited, 26, elephant=False, memo=memo)
+        return 0
 
-    if min1 > 0 and min2 > 0:
-        return find_max_pressure(source, dest, min1 - 1, min2 - 1, graph, flow_rates, total_flow_rate, visited, minutes - 1)
+    best_pressure = 0
+    for dest, dist in graph[valve]:
+        if dist >= minutes or dest in visited:
+            continue
 
-    best_flow_rate = total_flow_rate
-    if min1 == 0:
-        found_best = False
+        pressure = find_max_pressure(dest, graph, flow_rates, visited | {dest}, minutes - dist, elephant, memo=memo) \
+            + flow_rates[dest] * (minutes - dist)
 
-        for to, dist in graph[source]:
-            if dist >= minutes or to in visited:
-                continue
+        best_pressure = max(best_pressure, pressure)
 
-            found_best = True
-            visited.add(to)
+    if elephant and best_pressure == 0:
+        return find_max_pressure("AA", graph, flow_rates, visited, 26, elephant=False, memo=memo)
 
-            flow_rate = find_max_pressure(
-                to,
-                dest,
-                dist,
-                min2,
-                graph,
-                flow_rates,
-                total_flow_rate + flow_rates[to] * (minutes - dist),
-                visited,
-                minutes,
-            )
-            visited.remove(to)
-
-            if flow_rate > best_flow_rate:
-                best_flow_rate = flow_rate
-
-        if found_best:
-            return best_flow_rate
-
-    if min2 == 0:
-        for to, dist in graph[dest]:
-            if dist >= minutes or to in visited:
-                continue
-
-            visited.add(to)
-
-            flow_rate = find_max_pressure(
-                source,
-                to,
-                min1,
-                dist,
-                graph,
-                flow_rates,
-                total_flow_rate + flow_rates[to] * (minutes - dist),
-                visited,
-                minutes,
-            )
-            visited.remove(to)
-
-            if flow_rate > best_flow_rate:
-                best_flow_rate = flow_rate
-
-    return best_flow_rate
+    memo[state] = best_pressure
+    return best_pressure
 
 
 def part_one(data):
-    return find_max_pressure("AA", "AA", 100, 0, *data, 0, {"AA"}, 30)
+    return find_max_pressure("AA", *data, frozenset(["AA"]), 30)
 
 
 def part_two(data):
-    return find_max_pressure("AA", "AA", 0, 0, *data, 0, {"AA"}, 26)
+    return find_max_pressure("AA", *data, frozenset(["AA"]), 26, elephant=True)
 
 
 def main():
