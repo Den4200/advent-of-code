@@ -45,10 +45,10 @@ def part_one(data):
     indices = np.array([*flat_indices]).reshape((len(data), len(data[0]), 2))
 
     positions = {
-        *indices[0,],
-        *indices[-1,],
-        *indices[:,0],
-        *indices[:,-1],
+        *map(tuple, indices[0,]),
+        *map(tuple, indices[-1,]),
+        *map(tuple, indices[:,0]),
+        *map(tuple, indices[:,-1]),
     }
 
     positions |= get_visible_path(data)
