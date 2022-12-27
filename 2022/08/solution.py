@@ -36,7 +36,7 @@ def get_visible_path(height_map, reverse=False):
                     positions.add((len(row) - x - 1, y))
 
                 highest = val
-    
+
     return positions
 
 

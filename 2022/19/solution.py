@@ -2,11 +2,10 @@ from collections import namedtuple
 from math import prod
 import re
 
-import numpy as np
-
 Blueprint = namedtuple(
     "Blueprint",
-    "id ore_robot_cost clay_robot_cost obsidian_robot_ore_cost obsidian_robot_clay_cost geode_robot_ore_cost geode_robot_obsidian_cost"
+    "id ore_robot_cost clay_robot_cost obsidian_robot_ore_cost obsidian_robot_clay_cost "
+    "geode_robot_ore_cost geode_robot_obsidian_cost"
 )
 
 State = namedtuple(
@@ -80,7 +79,11 @@ def find_max_geodes(blueprint, duration):
                 ))
             )
 
-        if state.ores >= blueprint.obsidian_robot_ore_cost and state.clay >= blueprint.obsidian_robot_clay_cost and state.obsidian_robots < max_obsidian_robots:
+        if (
+            state.ores >= blueprint.obsidian_robot_ore_cost
+            and state.clay >= blueprint.obsidian_robot_clay_cost
+            and state.obsidian_robots < max_obsidian_robots
+        ):
             best = max(
                 best,
                 solve(State(
@@ -94,7 +97,10 @@ def find_max_geodes(blueprint, duration):
                 ))
             )
 
-        if state.ores >= blueprint.geode_robot_ore_cost and state.obsidian >= blueprint.geode_robot_obsidian_cost:
+        if (
+            state.ores >= blueprint.geode_robot_ore_cost
+            and state.obsidian >= blueprint.geode_robot_obsidian_cost
+        ):
             best = max(
                 best,
                 state.minutes_left - 1 + solve(State(

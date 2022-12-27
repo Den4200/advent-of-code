@@ -58,7 +58,9 @@ def parse_data():
             0,
         )
         for monkey in re.findall(
-            r"Monkey (\d+):\n  Starting items: (.+)\n  Operation: new = old (\*|\+) (old|\d+)\n  Test: divisible by (\d+)\n    If true: throw to monkey (\d+)\n    If false: throw to monkey (\d+)",
+            r"Monkey (\d+):\n  Starting items: (.+)\n  Operation: new = old (\*|\+) (old|\d+)\n  "
+            r"Test: divisible by (\d+)\n    If true: throw to monkey (\d+)\n    "
+            r"If false: throw to monkey (\d+)",
             data
         )
     ]

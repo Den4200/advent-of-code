@@ -40,7 +40,15 @@ def find_max_pressure(valve, graph, flow_rates, visited, minutes, elephant=False
 
     if minutes == 0:
         if elephant:
-            return find_max_pressure("AA", graph, flow_rates, visited, 26, elephant=False, memo=memo)
+            return find_max_pressure(
+                "AA",
+                graph,
+                flow_rates,
+                visited,
+                26,
+                elephant=False,
+                memo=memo,
+            )
         return 0
 
     best_pressure = 0
@@ -48,8 +56,15 @@ def find_max_pressure(valve, graph, flow_rates, visited, minutes, elephant=False
         if dist >= minutes or dest in visited:
             continue
 
-        pressure = find_max_pressure(dest, graph, flow_rates, visited | {dest}, minutes - dist, elephant, memo=memo) \
-            + flow_rates[dest] * (minutes - dist)
+        pressure = find_max_pressure(
+            dest,
+            graph,
+            flow_rates,
+            visited | {dest},
+            minutes - dist,
+            elephant,
+            memo,
+        ) + flow_rates[dest] * (minutes - dist)
 
         best_pressure = max(best_pressure, pressure)
 

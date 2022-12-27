@@ -9,9 +9,12 @@ def parse_data():
         data = f.read()
 
     sections = data.split("\n\n")
-    crates = np.transpose([[line[i] for i in range(1, len(line), 4)] for line in sections[0].splitlines()[:-1]])[::,::-1]
+    crates = np.transpose([
+        [line[i] for i in range(1, len(line), 4)]
+        for line in sections[0].splitlines()[:-1]
+    ])[::,::-1]
     crates = [[crate for crate in stack if crate != " "] for stack in crates]
-    moves = [tuple(map(int, re.findall("\d+", line))) for line in sections[1].splitlines()]
+    moves = [tuple(map(int, re.findall(r"\d+", line))) for line in sections[1].splitlines()]
 
     return {
         "crates": crates,
