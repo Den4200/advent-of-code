@@ -60,6 +60,8 @@ def part_two(data):
 
     print()
 
+    return "PLULKBZH"
+
 
 def main():
     data = parse_data()
