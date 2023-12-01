@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 
 
 AOC_SESSION_COOKIE = os.environ.get('AOC_SESSION_COOKIE')
-YEAR = 2022
+YEAR = 2023
 
 STARTING_CODE = """\
 def parse_data():
@@ -42,7 +42,7 @@ def advent_day(day: str) -> int:
 
     if 1 <= day <= 25:
         return day
-    
+
     raise ArgumentTypeError(f'{day} is not in range of 1 - 25')
 
 
