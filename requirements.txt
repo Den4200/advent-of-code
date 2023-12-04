@@ -5,6 +5,6 @@ more_itertools==8.6.0
 networkx==2.8.8
 numpy==1.23.3
 requests==2.28.1
-scipy==1.9.3
+scipy==1.10.0
 sympy==1.11.1
 z3-solver==4.11.2.0
